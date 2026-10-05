@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="dark">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Para mi bbchita hermosa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,21 +19,16 @@
     --text: #fff0f6;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { background: #1a0620; }
+  html { background: #3d0b3a linear-gradient(160deg, #1a0620, #3d0b3a 55%, #7a1646) no-repeat; background-size: 100% 100%; }
   html, body { min-height: 100%; }
   body {
     font-family: 'Cormorant Garamond', Georgia, serif;
     color: var(--text);
     overflow-x: hidden;
   }
-  /* Fondo fijo (funciona en celulares, sin zonas blancas) */
-  #bg {
-    position: fixed; inset: 0; z-index: -1; transform: translateZ(0);
-    background: linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
-  }
 
   /* ---------- Fondo animado ---------- */
-  #sky, #hearts { position: fixed; inset: 0; pointer-events: none; }
+  #sky, #hearts { position: fixed; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; }
   #sky { z-index: 0; }
   #hearts { z-index: 1; overflow: hidden; }
   .star {
@@ -76,7 +72,7 @@
 
   h1 {
     font-family: 'Great Vibes', cursive; font-weight: 400;
-    text-align: center; font-size: clamp(2.6rem, 9vw, 4.6rem);
+    text-align: center; font-size: clamp(2.6rem, 9vw, 4.6rem); color: var(--rose-soft);
     line-height: 1.15; margin: 8px 0 28px;
     background: linear-gradient(90deg, var(--rose-soft), #fff, var(--gold), var(--rose-soft));
     background-size: 250% auto;
@@ -128,7 +124,6 @@
 </style>
 </head>
 <body>
-  <div id="bg"></div>
   <div id="sky"></div>
   <div id="hearts"></div>
 
@@ -157,6 +152,7 @@
       <p class="sign" style="--i:4">Con amor, tu novio pechocho 🥺❤️❤️❤️❤️</p>
     </section>
   </main>
+  <noscript><p style="position:relative;z-index:3;text-align:center;padding:20px">Activa JavaScript para ver tu sorpresa ❤️</p></noscript>
 
 <script>
   // Estrellas titilantes
