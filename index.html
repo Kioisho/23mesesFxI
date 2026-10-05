@@ -18,13 +18,17 @@
     --text: #fff0f6;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #1a0620; }
   html, body { min-height: 100%; }
   body {
     font-family: 'Cormorant Garamond', Georgia, serif;
     color: var(--text);
-    background: linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
-    background-attachment: fixed;
     overflow-x: hidden;
+  }
+  /* Fondo fijo (funciona en celulares, sin zonas blancas) */
+  #bg {
+    position: fixed; inset: 0; z-index: -1; transform: translateZ(0);
+    background: linear-gradient(160deg, var(--bg1), var(--bg2) 55%, var(--bg3));
   }
 
   /* ---------- Fondo animado ---------- */
@@ -108,10 +112,23 @@
     font-family: 'Great Vibes', cursive; font-size: clamp(1.9rem, 6vw, 2.6rem);
     text-align: right; color: var(--gold); margin: 1.2em 0 0;
   }
+  #countdown { text-align: center; padding-top: 4vh; }
+  #countdown .sub { font-size: clamp(1.2rem, 4vw, 1.6rem); font-style: italic; color: var(--rose-soft); margin-bottom: 28px; }
+  .units { display: flex; justify-content: center; gap: clamp(8px, 3vw, 20px); flex-wrap: wrap; }
+  .unit {
+    min-width: 76px; padding: 16px 10px; border-radius: 18px;
+    background: var(--paper); border: 1px solid rgba(255,194,217,.3);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(255,107,157,.2);
+  }
+  .unit b { display: block; font-size: clamp(2rem, 9vw, 3.2rem); font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
+  .unit span { font-size: .95rem; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); }
+  [hidden] { display: none !important; }
   .emojis { letter-spacing: .15em; }
 </style>
 </head>
 <body>
+  <div id="bg"></div>
   <div id="sky"></div>
   <div id="hearts"></div>
 
@@ -119,7 +136,16 @@
     <span class="big-heart">❤️</span>
     <h1>Para mi bbchita hermosa</h1>
 
-    <section class="card" id="message">
+    <section id="countdown">
+      <p class="sub">Falta muy poquito para tu sorpresa... 💌</p>
+      <div class="units">
+        <div class="unit"><b id="h">--</b><span>horas</span></div>
+        <div class="unit"><b id="m">--</b><span>min</span></div>
+        <div class="unit"><b id="s">--</b><span>seg</span></div>
+      </div>
+    </section>
+
+    <section class="card" id="message" hidden>
       <p style="--i:0">Hoy en día, un día tan especial, eres mi niña preciosa y perfecta, tan bella. Hoy es tu día especial, y quisiera estar para ti muchos más años, si es posible toda tu vida. Vivimos muchos momentos hermosos juntos. Tienes una belleza sin igual, espero que este día sea tan especial como lo eres tú. Has llenado mi vida de dicha, y como siempre pensaré eres lo más valioso que me ha regalado Dios. Te amaré por siempre y para siempre, hasta que la muerte nos separe y cuando eso ocurra nuestro amor irá más allá de lo físico, amor eterno.</p>
 
       <p style="--i:1">Eres perfecta, eres lo más bello que ha creado Dios, eres increíble, y la doctora más inteligente y guapa de todo el universo entero, las estrellas se opacan con tu belleza, nunca tendrás igual, quiero estar a tu lado para siempre y amarnos para siempre, ese es mi mayor deseo.</p>
@@ -159,6 +185,27 @@
     h.style.setProperty('--sway', (Math.random() * 80 - 40) + 'px');
     hearts.appendChild(h);
   }
+
+  // Cuenta regresiva: 5 de octubre de 2026, 4:00 am (hora del dispositivo)
+  // Para probar: ?test=10 (10 seg) o ?ver=mensaje
+  const q = new URLSearchParams(location.search);
+  const target = q.get('test')
+    ? Date.now() + (+q.get('test')) * 1000
+    : new Date(2026, 9, 5, 4, 0, 0).getTime();
+  const cd = document.getElementById('countdown'), msg = document.getElementById('message');
+  const pad = n => String(n).padStart(2, '0');
+  function tick() {
+    const left = target - Date.now();
+    if (left <= 0 || q.get('ver') === 'mensaje') {
+      cd.hidden = true; msg.hidden = false; return;
+    }
+    const t = Math.floor(left / 1000);
+    document.getElementById('h').textContent = pad(Math.floor(t / 3600));
+    document.getElementById('m').textContent = pad(Math.floor(t % 3600 / 60));
+    document.getElementById('s').textContent = pad(t % 60);
+    setTimeout(tick, 250);
+  }
+  tick();
 </script>
 </body>
 </html>
